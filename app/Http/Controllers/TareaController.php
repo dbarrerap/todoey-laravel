@@ -15,6 +15,7 @@ class TareaController extends Controller
     public function index()
     {
         $tareas = Tarea::all();
+        return response()->json($tareas->toArray());
     }
 
     /**
@@ -25,7 +26,14 @@ class TareaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tarea = new Tarea();
+        $tarea->nombre = $request['nombre'];
+        $tarea->fecha = $request['fecha'];
+        $tarea->realizado = $request['realizado'];
+        $tarea->descripcion = $request['descripcion'];
+        $tarea->save();
+
+        return response()->json($tarea->toArray(), 201);
     }
 
     /**
@@ -34,9 +42,9 @@ class TareaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Tarea $id)
+    public function show(Tarea $tarea)
     {
-        //
+        return response()->json($tarea->toArray());
     }
 
     /**
@@ -46,9 +54,15 @@ class TareaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tarea $id)
+    public function update(Request $request, Tarea $tarea)
     {
-        //
+        $tarea->nombre = $request['nombre'];
+        $tarea->fecha = $request['fecha'];
+        $tarea->realizado = $request['realizado'];
+        $tarea->descripcion = $request['descripcion'];
+        $tarea->save();
+
+        return response()->json($tarea->toArray());
     }
 
     /**
@@ -57,8 +71,9 @@ class TareaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Tarea $id)
+    public function destroy(Tarea $tarea)
     {
-        //
+        $tarea->delete();
+        return response()->json(['message' => 'Tarea eliminada'], 204);
     }
 }
