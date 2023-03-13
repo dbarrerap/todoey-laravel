@@ -18,7 +18,7 @@ class TareaFactory extends Factory
     {
         return [
             'nombre' => fake()->sentence(5),
-            'fecha' => fake()->date(),
+            'fecha' => now(),
             'realizado' => fake()->boolean(),
             'descripcion' => fake()->text(),
         ];
