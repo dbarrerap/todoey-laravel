@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tarea;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TareaController extends Controller
 {
@@ -12,10 +13,18 @@ class TareaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $tareas = Tarea::all();
-        return response()->json($tareas->toArray());
+
+        $response = ($request->paginate) ? new LengthAwarePaginator(
+            $tareas->forPage($request->page, $request->size),
+            $tareas->count(),
+            $request->size,
+            $request->page
+        ) : $tareas;
+
+        return response()->json($response->toArray());
     }
 
     /**
